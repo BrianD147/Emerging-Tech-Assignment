@@ -1,3 +1,5 @@
+# Note: A command has been included at the top of the digit-recognition notebook to easily run this code
+
 # Imports
 import keras as kr
 import numpy as np
@@ -57,7 +59,7 @@ for i in range(20): #Run 20 tests
     print("=================================")
     randIndex = randint(0, 9999) #Get a random index to pull an image from
     test = model.predict(test_images[randIndex:randIndex+1]) #Pull the image from the dataset
-    result = test.argmax(axis=1)
+    result = test.argmax(axis=1) #Set result to the highest array value
     print("The actual number: =>> ", test_labels[randIndex:randIndex+1])
     print("The network reads: =>> ", result)
     print("=================================")
