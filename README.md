@@ -23,3 +23,8 @@ In order to use these notebooks and python script, the following steps must be t
 ## Running the python script
 
 The python script, contained in the digit-recognition folder, can be run either from the top of the digit-recognition notebook, or can be run from console by navigating into the digit-recognition folder, and running "python digitrec.py"
+
+The program will explain itself, giving the user the option to either train the model more, or use it in it's current state.
+It will also offer to either use random digits from the test dataset, or allow the user to select there own image and test from that.
+
+*Note: There are handwritten digit images included in a seperate folder, if the user doesn't have there own images to test with*
