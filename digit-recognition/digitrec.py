@@ -52,21 +52,63 @@ encoder.fit(training_labels)
 neuron_outputs = encoder.transform(training_labels)
 
 # Ask user if they would like to run a training session, or use the model in it's current state
+print()
+print()
 print("Would you like to run a training session? (Note: choosing no will run the model in it's current state)")
 option = input("y/n : ")
 if option == 'y':
     # Train the model
     model.fit(neuron_inputs, neuron_outputs, epochs=20, batch_size=100)
+    # Save the model
     model.save("data/model.h5")
-else:
+elif option == 'n':
+    # Load the model
     model.load_weights("data/model.h5")
+else:
+    print("*Invalid option selected*")
+    print("**Model will not produce accurate predictions due to lack of training**")
     
-from random import randint
-for i in range(20): #Run 20 tests
-    print("=================================")
-    randIndex = randint(0, 9999) #Get a random index to pull an image from
-    test = model.predict(test_images[randIndex:randIndex+1]) #Pull the image from the dataset
+print()
+print()
+print("1 - Test the model against random digits from the dataset")
+print("2 - Test the model against your own image of a digit")
+option = input("1/2 : ")
+if option == '1':
+    from random import randint
+    
+    for i in range(20): #Run 20 tests
+        print("=================================")
+        randIndex = randint(0, 9999) #Get a random index to pull an image from
+        test = model.predict(test_images[randIndex:randIndex+1]) #Pull the image from the dataset
+        result = test.argmax(axis=1) #Set result to the highest array value
+        print("The actual number: =>> ", test_labels[randIndex:randIndex+1])
+        print("The network reads: =>> ", result)
+        print("=================================")
+elif option == '2':
+    # Imports
+    import tkinter as tk
+    from tkinter import filedialog
+    from keras.preprocessing import image
+    
+    # Set root and hide root window using .withdraw()
+    root = tk.Tk()
+    root.withdraw()
+    
+    # Prompt filename and load image
+    file_path = filedialog.askopenfilename()
+    user_image = image.load_img(path=file_path,color_mode = "grayscale",target_size=(28,28,1))
+    
+    # Flatten image into single dimentional array
+    flattened_image = np.array(list(image.img_to_array(user_image))).reshape(1, 784).astype(np.uint8) / 255.0
+    
+    test = model.predict(flattened_image) #Allow network to read the image
     result = test.argmax(axis=1) #Set result to the highest array value
-    print("The actual number: =>> ", test_labels[randIndex:randIndex+1])
+    
+    print("=================================")
     print("The network reads: =>> ", result)
     print("=================================")
+else:
+    print("*Invalid option selected*")
+    print("**Exiting without running model**")
+    
+
